@@ -2,7 +2,8 @@ __snippets(
 
 	{
 		"cl": "console.log(  )",
-		"cd": "console.dir(  )"
+		"cd": "console.dir(  )", 
+		"mp": "WOOO!"
 	}
 
 );

@@ -59,6 +59,36 @@ test("Loading", function() {
     plus();
   });
 });
-// loading async behaviour
+
+module("Replacement")
+test("snippet key", function() {
+
+  var expects = 1, 
+    count = 0, 
+    typeables = document.querySelectorAll("input,textarea"),
+    evt = document.createEvent( "Events" );
+
+  expect(expects);
+  
+  function plus() { 
+    if ( ++count === expects ) {
+      start(); 
+    }
+  }  
+  
+  stop();
+
+  evt.initEvent( "keydown", true, true, window, 1 );
+  evt.which = 9;
+
+  typeables[ 0 ].value = "cl";
+  typeables[ 0 ].dispatchEvent( evt );
+
+  equal( typeables[ 0 ].value, "console.log(  )", "cl => console.log(  )" );
+  plus();
+
+});
+
+
 
 

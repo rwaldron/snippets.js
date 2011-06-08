@@ -13,14 +13,47 @@
   function Snippets( resource, inputs, callback ) {
 
     if ( !resource || !inputs ) {
-
-      console.log( resource, inputs );
       throw new Error("Not enough arguments: Missing " + 
-              ( ( !resource && "`resource`" ) || 
-                ( !inputs && "`inputs`" ) ) );
+              ( ( !resource && "'resource'" ) || 
+                ( !inputs && "'inputs'" ) ) );
     }
 
     this.data = {};
+
+    this.initialize = function() {
+
+      var triggers = this.data;
+
+      [].forEach.call( inputs, function( input ) {
+
+        input.addEventListener("keydown", function( event ) {
+
+          var target = event.target || event.srcElement, 
+            val = target.value.replace(/^\s+/, "").replace(/\s+$/, ""), 
+            key = val.substr( val.length-2 ),
+            replacement = triggers[ key ];
+
+          // If the tab key was pressed and a valid trigger was just typed
+          if ( event.which === 9 && replacement ) {
+
+            event.preventDefault();
+
+            input.value = val.replace( new RegExp( key + "$" ), replacement );
+
+            // TODO: add cursor position "placeholders" to snippets, 
+            // find them here, replace with empty string, place cursor
+            // --- For now, just hop inside the last parens --- 
+            input.setSelectionRange( 
+              input.value.lastIndexOf("(") + 1,
+              input.value.lastIndexOf(")")
+            );
+
+          }
+        }, false);
+      });
+
+    // Bind lexical scope to closure
+    }.bind( this );
 
     this.load = function() {
 
@@ -31,12 +64,14 @@
       script.async = "async";
 
       // Setup handler
+      // TODO: this will clobber existing __snippets callbacks
+      //         make unique
       global["__snippets"] = function( snips ) {
 
         this.data = snips;
 
         // Init the snippet machine
-        this.initialize
+        this.initialize();
         
         // Execute user callback if defined
         if ( callback ) {
@@ -53,7 +88,7 @@
         // When complete, garbage collect the DOM
         if ( !script.readyState || /loaded|complete/.test( script.readyState ) ) {
           head.removeChild( script );
-          delete global["__snippets"];
+          //delete global["__snippets"];
         }
       };
 
@@ -70,16 +105,4 @@
   global.snippets = function( resource, inputs, callback ) {
     return new Snippets( resource, inputs, callback );
   };
-
-  document.addEventListener("DOMContentLoaded", function() {
-
-    var typables = doc.querySelectorAll("input,textarea");
-
-    snippets("../data/snippets.json", typables, function( snips ) {
-    
-    });
-
-
-  }, false);
-  
 })( this );

@@ -1,4 +1,16 @@
 <script src="../src/snippets.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+
+    var typables = document.querySelectorAll("input,textarea");
+
+    snippets("../data/snippets.json", typables, function( snips ) {
+    
+    });
+
+
+  }, false);
+</script>
 
 <input type="text" value="">
 <input type="text" value="">
