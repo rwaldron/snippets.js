@@ -29,7 +29,7 @@
         input.addEventListener("keydown", function( event ) {
 
           var target = event.target || event.srcElement, 
-            val = target.value.replace(/^\s+/, "").replace(/\s+$/, ""), 
+            val = (target.value || "").trim(), 
             key = val.slice( val.length-2 ),
             replacement = triggers[ key ];
 
