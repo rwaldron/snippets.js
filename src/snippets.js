@@ -30,7 +30,7 @@
 
           var target = event.target || event.srcElement, 
             val = target.value.replace(/^\s+/, "").replace(/\s+$/, ""), 
-            key = val.substr( val.length-2 ),
+            key = val.slice( val.length-2 ),
             replacement = triggers[ key ];
 
           // If the tab key was pressed and a valid trigger was just typed
