@@ -64,5 +64,5 @@ https://gist.github.com/793649
 	- `fc` => `(function() {\n\t${0}\n})();`
 
 
-### TODO: Open to suggestion
+### TODO: Add interop with contenteditable elements
 
