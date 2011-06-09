@@ -33,3 +33,9 @@ https://gist.github.com/793649
 		}
 	);
 	```
+
+
+3. Snippets
+
+	- `cl => console.log(  )`
+	- `cd => console.dir(  )`
