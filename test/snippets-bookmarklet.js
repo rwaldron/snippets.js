@@ -1,27 +1,26 @@
-(function(g) {
+(function(g, $) {
   var f = function() {
-		snippets( "https://raw.github.com/rwldrn/snippets.js/master/data/snippets.json", ins );
-	}, 
-	d = g.document, 
-	$ = g.jQuery,
-	u = "https://raw.github.com/rwldrn/snippets.js/master/src/snippets.js",
-	h, s, ins;
+        snippets( p + "data/"+c+"on", ins );
+    }, 
+    d = g.document,
+    r = $ && $.getScript,
+    c = "snippets.js",
+    p = "https://raw.github.com/rwldrn/"+c+"/master/",
+    u = p + "src/"+c,
+    ins = d.querySelectorAll("input,textarea"),
+    h, s;
 
-  if ( $ ) {
-		$.getScript(u, f);
-  } else {
-  
-	h = d.head;
-	s = d.createElement("script");
-	ins = d.querySelectorAll("input,textarea");
+    if ( !r || !r(u, f) ) {
+      h = d.head;
+      s = d.createElement("script")
 
-	s.async = "async";
-	s.src = u;
-	s.onload = function() {
-		h.removeChild( s );
-		f();
-	};
-	h.insertBefore( s, h.firstChild );
-  
-  }
-})(this);
+      s.async = "async";
+      s.src = u;
+      s.onload = function() {
+          h.removeChild( s );
+          f();
+      }, 
+      h.insertBefore( s, h.firstChild );
+    }
+
+})(this, this.jQuery);
