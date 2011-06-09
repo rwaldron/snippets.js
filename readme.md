@@ -19,8 +19,7 @@ Bookmarklet: test/snippets-bookmarklet.html
 
 
 -------------------------
-Contributions should follow these guidelines:
-https://gist.github.com/793649
+Contributions should follow [these guidelines](https://github.com/rwldrn/idiomatic.js/blob/master/readme.md)
 
 
 -------------------------
