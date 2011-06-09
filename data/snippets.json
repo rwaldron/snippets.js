@@ -1,8 +1,8 @@
 __snippets(
 
 	{
-		"cl": "console.log(  )",
-		"cd": "console.dir(  )", 
+		"cl": "console.log( ${0} )",
+		"cd": "console.dir( ${0} )", 
 		"mp": "WOOO!"
 	}
 

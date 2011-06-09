@@ -1,17 +1,54 @@
 
 
 module("Core");
-test("Snippets", 2, function() {
+test("Constructor", 2, function() {
 
   ok( snippets, "`snippets` exists")
 
   equal( typeof snippets, "function", "`snippets` is a function");
 });
 
+test("Instances", function() {
 
-test("Params list", 3, function() {
+  var expects = 3, 
+    count = 0, 
+    context = document.getElementById("qunit-fixture"),
+    typeables = context.querySelectorAll("input,textarea");
 
-  var typeables = document.querySelectorAll("input,textarea");
+  expect(expects);
+
+  function plus() { 
+    if ( ++count === expects ) {
+      start(); 
+    }
+  }
+
+  stop();
+
+  var ref = {
+    cl: "console.log( ${0} )",
+    cd: "console.dir( ${0} )", 
+    mp: "WOOO!"
+  };
+
+  snippets("../data/snippets.json", typeables, function( snips ) {
+
+    equal( this.constructor.name, "Snippets", "this.constructor.name is 'Snippets'" );
+    plus();
+
+    deepEqual( snips, ref, "'snips' argument matches 'ref'" );
+    plus();
+    
+    deepEqual( this.data, ref, "'this.data' matches 'ref'" );
+    plus();
+  });
+});
+
+module("Execution");
+test("Param List", 3, function() {
+
+  var context = document.getElementById("qunit-fixture"),
+  typeables = context.querySelectorAll("input,textarea");
 
   try {
     snippets();
@@ -37,12 +74,13 @@ test("Params list", 3, function() {
 
 });
 
-module("Async")
-test("Loading", function() {
+
+test("Async Loading", function() {
 
   var expects = 1, 
     count = 0, 
-    typeables = document.querySelectorAll("input,textarea");
+    context = document.getElementById("qunit-fixture"),
+    typeables = context.querySelectorAll("input,textarea");
 
   expect(expects);
   
@@ -55,17 +93,20 @@ test("Loading", function() {
   stop();
 
   snippets("../data/snippets.json", typeables, function( snips ) {
-    ok( snips, "loaded!" );
-    plus();
+    if ( !count ) {
+      ok( snips, "loaded!" );
+      plus();
+    }
   });
 });
 
-module("Replacement")
-test("snippet key", function() {
+test("Replacement Triggers", function() {
 
-  var expects = 1, 
+  var expects = 6, 
     count = 0, 
-    typeables = document.querySelectorAll("input,textarea"),
+    context = document.getElementById("qunit-fixture"),
+    typeables = context.querySelectorAll("input,textarea"),
+    input = typeables[ 0 ],
     evt = document.createEvent( "Events" );
 
   expect(expects);
@@ -78,15 +119,39 @@ test("snippet key", function() {
   
   stop();
 
-  evt.initEvent( "keydown", true, true, window, 1 );
-  evt.which = 9;
+  snippets("../data/snippets.json", typeables, function( snips ) {
 
-  typeables[ 0 ].value = "cl";
-  typeables[ 0 ].dispatchEvent( evt );
+    evt.initEvent( "keydown", true, true, window, 1 );
+    evt.which = 9;
 
-  equal( typeables[ 0 ].value, "console.log(  )", "cl => console.log(  )" );
-  plus();
+    input.value = "cl";
+    input.dispatchEvent( evt );
 
+    equal( input.value, "console.log(   )", "'cl => console.log(   )'" );
+    plus();
+
+    //console.log( input.selectionStart, input.value.length );
+
+    equal( input.selectionStart, 13, "13 chars from 0 index to position of cursor cue");
+    plus();
+
+    equal( input.value.length, 16, "16 chars total length");
+    plus();
+
+    // Add another snippet
+    input.value = input.value + " mp";
+    input.dispatchEvent( evt );
+
+    equal( input.value, "console.log(   ) WOOO!", "'console.log(   ) mp' => 'console.log(   ) WOOO!'" );
+    plus();
+
+    equal( input.selectionStart, 22, "22 chars from 0 index to position of cursor cue");
+    plus();
+
+    equal( input.value.length, 22, "22 chars total length");
+    plus();
+
+  });
 });
 
 

@@ -30,29 +30,75 @@
 
           var // declare reference to event target element
             target = event.target || event.srcElement, 
+
             // store trimmed copy of strng contents
-            val = (target.value || "").trim(), 
-            // slice the last two characters
-            // TODO: use cursor position instead
-            key = val.slice( val.length-2 ),
+            val = (target.value || "").trim(),
+
+            // Get cursor position
+            cursorAt = input.selectionStart,
+            start = cursorAt - 2, 
+            end = cursorAt, 
+
+            // Store leading & trailing
+            leading = val.slice( 0, start ) || "", 
+            trailing = val.slice( end, val.length ) || "",
+
+            // Fragment lengths
+            leadingLen = leading.length,
+
+            // Take the two characters to the left of the cursor and create a key
+            key = val.slice( start, end ),
+
             // try to dereference the triggers object
-            replacement = triggers[ key ];
+            replacement = triggers[ key ], 
+
+            // Cursor repositioning vars
+            cursorCues, cursorToA, cursorToB;
 
           // If the tab key was pressed and a valid trigger was just typed
           if ( event.which === 9 && replacement ) {
 
+            // A valid tab-trigger was typed, then tabbed.
+            // Do not "tab" to next element in DOM tabIndex
             event.preventDefault();
 
-            input.value = val.replace( new RegExp( key + "$" ), replacement );
+            // Determine if a cursor cue was defined in the snippet
+            // TODO: modify these to actually have variable replacement behaviour
+            cursorCues = /(\$\{)([0-9]+)(\})/g.exec( replacement );
 
-            // TODO: add cursor position "placeholders" to snippets, 
-            // find them here, replace with empty string, place cursor
-            // --- For now, just hop inside the last parens --- 
-            input.setSelectionRange( 
-              input.value.lastIndexOf("(") + 1,
-              input.value.lastIndexOf(")")
+            if ( cursorCues && cursorCues.length ) {
+
+              // Calculate the correct position of the
+              // cursor cue, relative to the entire body
+              // of text content.
+              cursorToA = replacement.indexOf( cursorCues[0] );
+              cursorToA += leadingLen; 
+
+              cursorToB = cursorToA + 1;
+
+              // Remove the cursor cue from replacement
+              // TODO: allow custom text swap into cursor cues
+              replacement = replacement.replace( cursorCues[0], " " );
+
+            } else {
+
+              // No cursor cue was defined, set 
+              // cursor to end of snippet text
+              cursorToA = leadingLen + replacement.length;
+              cursorToB = cursorToA;
+            }
+
+            // Update input to reflect new value with 
+            // snippet injected into text bodt
+            input.value = [ leading, replacement, trailing ].join("");
+
+            // Update cursor position with either:
+            //  - cursor cues position
+            //  - end of replacement position
+            input.setSelectionRange(
+              cursorToA,
+              cursorToB
             );
-
           }
         }, false);
       });
@@ -80,7 +126,7 @@
         
         // Execute user callback if defined
         if ( callback ) {
-          callback.call( null, snips );
+          callback.call( this, snips );
         }
 
       }.bind(this);
