@@ -4,6 +4,13 @@
 
 ### c-l-tab => console.log(  )
 
+## Roadmap
+
+1. Create a bookmarklet that loads Snippets.js and creates an instance in the target document, making all inputs into tab-trigger friendly 
+
+2. ?
+
+
 -------------------------
 Contributions should follow these guidelines:
 https://gist.github.com/793649
