@@ -117,7 +117,7 @@
       // Setup handler
       // TODO: this will clobber existing __snippets callbacks
       //         make unique
-      global["__snippets"] = function( snips ) {
+      global.__snippets = function( snips ) {
 
         this.data = snips;
 
@@ -139,7 +139,7 @@
         // When complete, garbage collect the DOM
         if ( !script.readyState || /loaded|complete/.test( script.readyState ) ) {
           head.removeChild( script );
-          //delete global["__snippets"];
+          //delete global.__snippets;
         }
       };
 
