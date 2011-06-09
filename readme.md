@@ -1,6 +1,8 @@
 # Snippets.js
 
-### Loads a set of frequently used snippets into the current document that insert on tab-triggers.
+### Loads a set of frequently used "tab-trigger" snippets into the current document.
+
+### c-l-tab => console.log(  )
 
 -------------------------
 Contributions should follow these guidelines:
