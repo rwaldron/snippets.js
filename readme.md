@@ -9,24 +9,27 @@ https://gist.github.com/793649
 
 -------------------------
 
-API:
+1. API:
 
 	```javascript
-		snippets( URI, NodeList [, callback ]);
-		
+	
+	snippets( URI, NodeList [, callback (opt) ]);
+	
 	```
 
-Usage:
+2. Usage:
 
 
 	```javascript
-		snippets(
-			"https://raw.github.com/rwldrn/snippets.js/master/data/snippets.json", 
-			document.querySelectorAll("input,textarea"), 
-			function( snips ) {
+	snippets(
+		"https://raw.github.com/rwldrn/snippets.js/master/data/snippets.json", 
+		document.querySelectorAll("input,textarea"), 
+		function( snips ) {
 
-				// ready.
+			// ready.
 
-			}
-		);
+			// |this| is the current snippets instance
+
+		}
+	);
 	```
