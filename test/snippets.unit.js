@@ -26,9 +26,21 @@ test("Instances", function() {
   stop();
 
   var ref = {
-    cl: "console.log( ${0} )",
-    cd: "console.dir( ${0} )", 
-    mp: "WOOO!"
+    "ca":"console.assert( ${0} );",
+    "cc":"console.count( ${0} );",
+    "cd":"console.debug( ${0} );",
+    "ce":"console.error( ${0} );",
+    "ci":"console.info( ${0} );",
+    "cl":"console.log( ${0} );",
+    "cm":"console.memory( ${0} );",
+    "cp":"console.profiles( ${0} );",
+    "cr":"console.dir( ${0} );",
+    "cw":"console.warn( ${0} );",
+
+    "pr": "print( ${0} )",
+    "if": "function() {\n\t${0}\n}",
+    "cr": "function ${0}() {\n\n}",
+    "mp": "WOOO!"
   };
 
   snippets("../data/snippets.json", typeables, function( snips ) {
@@ -127,7 +139,7 @@ test("Replacement Triggers", function() {
     input.value = "cl";
     input.dispatchEvent( evt );
 
-    equal( input.value, "console.log(   )", "'cl => console.log(   )'" );
+    equal( input.value, "console.log(   );", "'cl => console.log(   );'" );
     plus();
 
     //console.log( input.selectionStart, input.value.length );
@@ -135,25 +147,21 @@ test("Replacement Triggers", function() {
     equal( input.selectionStart, 13, "13 chars from 0 index to position of cursor cue");
     plus();
 
-    equal( input.value.length, 16, "16 chars total length");
+    equal( input.value.length, 17, "17 chars total length");
     plus();
 
     // Add another snippet
     input.value = input.value + " mp";
     input.dispatchEvent( evt );
 
-    equal( input.value, "console.log(   ) WOOO!", "'console.log(   ) mp' => 'console.log(   ) WOOO!'" );
+    equal( input.value, "console.log(   ); WOOO!", "'console.log(   ); mp' => 'console.log(   ); WOOO!'" );
     plus();
 
-    equal( input.selectionStart, 22, "22 chars from 0 index to position of cursor cue");
+    equal( input.selectionStart, 23, "23 chars from 0 index to position of cursor cue");
     plus();
 
-    equal( input.value.length, 22, "22 chars total length");
+    equal( input.value.length, 23, "23 chars total length");
     plus();
 
   });
 });
-
-
-
-
