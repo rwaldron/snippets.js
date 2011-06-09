@@ -28,9 +28,14 @@
 
         input.addEventListener("keydown", function( event ) {
 
-          var target = event.target || event.srcElement, 
+          var // declare reference to event target element
+            target = event.target || event.srcElement, 
+            // store trimmed copy of strng contents
             val = (target.value || "").trim(), 
+            // slice the last two characters
+            // TODO: use cursor position instead
             key = val.slice( val.length-2 ),
+            // try to dereference the triggers object
             replacement = triggers[ key ];
 
           // If the tab key was pressed and a valid trigger was just typed
