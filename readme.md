@@ -4,7 +4,7 @@
 
 ### c-l-tab => console.log(  )
 
-## Take a look at...
+### Once you've forked and cloned the repo locally, be sure to checkout these:
 
 Unit tests: test/index.html
 
