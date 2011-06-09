@@ -134,13 +134,9 @@
       // Set resource location
       script.src = resource;
 
-      script.onload = script.onreadystatechange = function() {
-
-        // When complete, garbage collect the DOM
-        if ( !script.readyState || /loaded|complete/.test( script.readyState ) ) {
-          head.removeChild( script );
-          //delete global.__snippets;
-        }
+      script.onload = function() {
+        head.removeChild( script );
+        //delete global.__snippets;
       };
 
       // Append script element, import resource
