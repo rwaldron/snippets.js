@@ -1,16 +1,27 @@
-(function(global) {
-  var doc = global.document;
-  head = doc.head || doc.getElementsByTagName("head")[0],
-  script = doc.createElement("script"),
-  typeables = doc.querySelectorAll("input,textarea");
+(function(g) {
+  var f = function() {
+		snippets( "https://raw.github.com/rwldrn/snippets.js/master/data/snippets.json", ins );
+	}, 
+	d = g.document, 
+	$ = g.jQuery,
+	u = "https://raw.github.com/rwldrn/snippets.js/master/src/snippets.js",
+	h, s, ins;
 
-  script.async = "async";
-  script.src = "https://raw.github.com/rwldrn/snippets.js/master/src/snippets.js";
-  script.onload = script.onreadystatechange = function() {
-    if ( !script.readyState || /loaded|complete/.test( script.readyState ) ) {
-      head.removeChild( script );
-      snippets("https://raw.github.com/rwldrn/snippets.js/master/data/snippets.json", typeables );
-    }
-  };
-  head.insertBefore( script, head.firstChild );
+  if ( $ ) {
+		$.getScript(u, f);
+  } else {
+  
+	h = d.head;
+	s = d.createElement("script");
+	ins = d.querySelectorAll("input,textarea");
+
+	s.async = "async";
+	s.src = u;
+	s.onload = function() {
+		h.removeChild( s );
+		f();
+	};
+	h.insertBefore( s, h.firstChild );
+  
+  }
 })(this);
