@@ -1,7 +1,7 @@
 /*!
  * Snippets.js
  * Copyright 2011, Rick Waldron
- * MIT License
+ * Dual MIT & GPL License
  *
  */
 
