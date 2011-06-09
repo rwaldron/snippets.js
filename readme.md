@@ -20,8 +20,13 @@ Usage:
 
 
 	```javascript
-		snippets("https://raw.github.com/rwldrn/snippets.js/master/data/snippets.json", document.querySelectorAll("input,textarea"), function( snips ) {
-			// ready.
+		snippets(
+			"https://raw.github.com/rwldrn/snippets.js/master/data/snippets.json", 
+			document.querySelectorAll("input,textarea"), 
+			function( snips ) {
 
-		});
+				// ready.
+
+			}
+		);
 	```
