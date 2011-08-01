@@ -12,10 +12,16 @@
 
   function Snippets( resource, inputs, callback ) {
 
+    // If no resource or no inputs, then there is no point.
     if ( !resource || !inputs ) {
-      throw new Error("Not enough arguments: Missing " + 
-              ( ( !resource && "'resource'" ) || 
+      throw new Error("Not enough arguments: Missing " +
+              ( ( !resource && "'resource'" ) ||
                 ( !inputs && "'inputs'" ) ) );
+    }
+
+    // If a string selector was provided, get matching elements
+    if ( typeof inputs === "string" ) {
+      inputs = doc.querySelectorAll( inputs );
     }
 
     this.data = {};
@@ -29,18 +35,18 @@
         input.addEventListener("keydown", function( event ) {
 
           var // declare reference to event target element
-            target = event.target || event.srcElement, 
+            target = event.target || event.srcElement,
 
             // store trimmed copy of strng contents
             val = (target.value || "").trim(),
 
             // Get cursor position
             cursorAt = input.selectionStart,
-            start = cursorAt - 2, 
-            end = cursorAt, 
+            start = cursorAt - 2,
+            end = cursorAt,
 
             // Store leading & trailing
-            leading = val.slice( 0, start ) || "", 
+            leading = val.slice( 0, start ) || "",
             trailing = val.slice( end, val.length ) || "",
 
             // Fragment lengths
@@ -50,7 +56,7 @@
             key = val.slice( start, end ),
 
             // try to dereference the triggers object
-            replacement = triggers[ key ], 
+            replacement = triggers[ key ],
 
             // Cursor repositioning vars
             cursorCues, cursorToA, cursorToB;
@@ -72,7 +78,7 @@
               // cursor cue, relative to the entire body
               // of text content.
               cursorToA = replacement.indexOf( cursorCues[0] );
-              cursorToA += leadingLen; 
+              cursorToA += leadingLen;
 
               cursorToB = cursorToA + 1;
 
@@ -82,13 +88,13 @@
 
             } else {
 
-              // No cursor cue was defined, set 
+              // No cursor cue was defined, set
               // cursor to end of snippet text
               cursorToA = leadingLen + replacement.length;
               cursorToB = cursorToA;
             }
 
-            // Update input to reflect new value with 
+            // Update input to reflect new value with
             // snippet injected into text bodt
             input.value = [ leading, replacement, trailing ].join("");
 
@@ -123,7 +129,7 @@
 
         // Init the snippet machine
         this.initialize();
-        
+
         // Execute user callback if defined
         if ( callback ) {
           callback.call( this, snips );
@@ -152,4 +158,5 @@
   global.snippets = function( resource, inputs, callback ) {
     return new Snippets( resource, inputs, callback );
   };
+
 })( this );
